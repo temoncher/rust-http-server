@@ -13,7 +13,17 @@ impl WebsiteHandler {
 
   fn read_file(&self, file_path: &str) -> Option<String> {
     let full_file_path = format!("{}/{}", self.public_path, file_path);
-    fs::read_to_string(full_file_path).ok()
+    match fs::canonicalize(full_file_path) {
+      Err(_) => None,
+      Ok(path) => {
+        if path.starts_with(&self.public_path) {
+          fs::read_to_string(path).ok()
+        } else {
+          println!("Directory traversal attack attempted: {}", file_path);
+          None
+        }
+      }
+    }
   }
 }
 
@@ -26,7 +36,10 @@ impl Handler for WebsiteHandler {
           StatusCode::Ok,
           Some("<h1>Hello, stranger!</h1>".to_string()),
         ),
-        _ => Response::new(StatusCode::NotFound, None),
+        path => match self.read_file(path) {
+          None => Response::new(StatusCode::NotFound, None),
+          Some(content) => Response::new(StatusCode::Ok, Some(content)),
+        },
       },
       _ => Response::new(StatusCode::MethodNotAllowed, None),
     }
