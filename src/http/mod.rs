@@ -1,7 +1,7 @@
 pub use method::Method;
 pub use request::{ParseError, Request};
 pub use request_query::{QueryValue, RequestQuery};
-pub use response::Respone;
+pub use response::Response;
 pub use status_code::StatusCode;
 
 pub mod method;

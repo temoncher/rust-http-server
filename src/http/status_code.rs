@@ -2,7 +2,7 @@ use std::fmt::{Display, Formatter, Result as FmtResult};
 
 #[derive(Copy, Clone, Debug)]
 pub enum StatusCode {
-  OK = 200,
+  Ok = 200,
   BadRequest = 400,
   NotFound = 404,
 }
@@ -10,7 +10,7 @@ pub enum StatusCode {
 impl StatusCode {
   pub fn reason_phrase(&self) -> &str {
     match self {
-      Self::OK => "Ok",
+      Self::Ok => "Ok",
       Self::BadRequest => "Bad Request",
       Self::NotFound => "Not Found",
     }
