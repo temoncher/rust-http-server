@@ -1,6 +1,6 @@
 use super::status_code::StatusCode;
 use std::fmt::{Display, Formatter, Result as FmtResult};
-use std::io::{Write, Result as IoResult};
+use std::io::{Result as IoResult, Write};
 
 #[derive(Debug)]
 pub struct Response {
