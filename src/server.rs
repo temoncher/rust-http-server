@@ -1,6 +1,6 @@
 use crate::http::request::Request;
 use std::convert::TryFrom;
-use std::io::Read;
+use std::io::{Read, Write};
 use std::net::TcpListener;
 
 pub struct Server {
@@ -32,8 +32,8 @@ impl Server {
 
               match Request::try_from(&buffer[..]) {
                 Err(parsing_error) => println!("Failed to parse a request: {}", parsing_error),
-                Ok(request) => {
-                  println!("{:?}", request)
+                Ok(_request) => {
+                  write!(stream, "HTTP/1.1 404 Not Found\r\n\r\n");
                 }
               };
             }
